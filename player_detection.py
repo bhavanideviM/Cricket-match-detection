@@ -1,9 +1,12 @@
 
-
-!pip install -q ultralytics opencv-python supervision deep-sort-realtime torch torchvision
+import cv2
+import numpy as np
+from collections import defaultdict
+from IPython.display import Video
+from deep_sort_realtime.deepsort_tracker import DeepSort
 
 import torch
-print(torch.cuda.is_available())
+print("Using device:", "cuda" if torch.cuda.is_available() else "cpu")
 
 from google.colab import files
 uploaded = files.upload()   # upload cricket video
@@ -22,7 +25,7 @@ model = YOLO("yolov8l.pt")
 
 PERSON_CLASS_ID = 0
 
-from deep_sort_realtime.deepsort_tracker import DeepSort
+
 
 tracker = DeepSort(
     max_age=60,
@@ -32,9 +35,6 @@ tracker = DeepSort(
     half=True
 )
 
-import cv2
-import numpy as np
-from collections import defaultdict
 
 cap = cv2.VideoCapture(VIDEO_PATH)
 
@@ -108,7 +108,6 @@ cv2.putText(frame,
             (0,0,255),
             2)
 
-from IPython.display import Video
 
 Video("output_tracking.mp4", embed=True)
 
